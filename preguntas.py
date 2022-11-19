@@ -44,7 +44,7 @@ def pregunta_02():
     """
     datos = [var.strip().split('\t')[0] for var in datos]
     col1 = sorted(dict.fromkeys(datos))
-    respuesta = list()
+    respuesta = []
     [respuesta.append((x, datos.count(x))) for x in col1]
 
     return respuesta
