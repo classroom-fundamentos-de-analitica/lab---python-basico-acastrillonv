@@ -21,7 +21,10 @@ def pregunta_01():
     214
 
     """
-    return
+
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+    return sum(int(var.strip().split('\t')[1]) for var in datos)
 
 
 def pregunta_02():
@@ -39,7 +42,12 @@ def pregunta_02():
     ]
 
     """
-    return
+    datos = [var.strip().split('\t')[0] for var in datos]
+    col1 = sorted(dict.fromkeys(datos))
+    respuesta = list()
+    [respuesta.append((x, datos.count(x))) for x in col1]
+
+    return respuesta
 
 
 def pregunta_03():
@@ -57,7 +65,21 @@ def pregunta_03():
     ]
 
     """
-    return
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+
+    datos = [var.strip().split('\t')[:2] for var in datos]
+    col1 = sorted(list({var[0] for var in datos}))
+    respuesta = []
+
+    for letra in col1:
+        sum = 0
+        for camp in datos:
+            if camp[0] == letra:
+                sum += int(camp[1])
+        respuesta.append((letra, sum))
+
+    return respuesta
 
 
 def pregunta_04():
@@ -82,7 +104,15 @@ def pregunta_04():
     ]
 
     """
-    return
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+
+    datos = [var.strip().split('\t')[2][5:7] for var in datos]
+    col1 = sorted(dict.fromkeys(datos))
+    respuesta = []
+    [respuesta.append((x, datos.count(x))) for x in col1]
+
+    return respuesta
 
 
 def pregunta_05():
@@ -100,7 +130,19 @@ def pregunta_05():
     ]
 
     """
-    return
+
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+
+    datos = [var.strip().split('\t')[:2] for var in datos]
+    col1 = sorted(list({var[0] for var in datos}))
+    respuesta = []
+
+    for letra in col1:
+        nums = [int(camp[1]) for camp in datos if camp[0] == letra]
+        respuesta.append((letra, max(nums), min(nums)))
+
+    return respuesta
 
 
 def pregunta_06():
@@ -125,7 +167,21 @@ def pregunta_06():
     ]
 
     """
-    return
+
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+
+    datos = [(var.strip().split('\t')[4]) for var in datos]
+    datos = ','.join(datos).split(',')
+    datos = [var.split(':') for var in datos]
+    keys = sorted(list({var[0] for var in datos}))
+    respuesta = []
+
+    for key in keys:
+        values = [int(camp[1]) for camp in datos if camp[0] == key]
+        respuesta.append((key, min(values), max(values)))
+
+    return respuesta
 
 
 def pregunta_07():
@@ -149,7 +205,18 @@ def pregunta_07():
     ]
 
     """
-    return
+    with open('data.csv', mode='r') as datos:
+            datos = datos.readlines()
+
+    datos = [var.strip().split('\t')[:2] for var in datos]
+    col2 = sorted(list({int(var[1]) for var in datos}))
+    respuesta = []
+
+    for num in col2:
+        letras = [camp[0] for camp in datos if int(camp[1]) == num]
+        respuesta.append((int(num), letras))
+
+    return respuesta
 
 
 def pregunta_08():
@@ -174,7 +241,20 @@ def pregunta_08():
     ]
 
     """
-    return
+
+    with open('data.csv', mode='r') as datos:
+            datos = datos.readlines()
+
+    datos = [var.strip().split('\t')[:2] for var in datos]
+    col2 = sorted(list({int(var[1]) for var in datos}))
+    respuesta = []
+
+    for num in col2:
+        letras_uniq = [camp[0] for camp in datos if int(camp[1]) == num]
+        respuesta.append((int(num), sorted(list(set(letras_uniq)))))
+
+
+    return respuesta
 
 
 def pregunta_09():
@@ -197,7 +277,16 @@ def pregunta_09():
     }
 
     """
-    return
+
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+
+    datos = [(var.strip().split('\t')[4]) for var in datos]
+    datos = ','.join(datos).split(',')
+    datos = [var.split(':')[0] for var in datos]
+    keys = sorted(list(set(datos)))
+    
+    return {key: datos.count(key) for key in keys}
 
 
 def pregunta_10():
@@ -218,7 +307,17 @@ def pregunta_10():
 
 
     """
-    return
+
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+
+    datos = [var.strip().split('\t') for var in datos]
+    for elem in datos:
+        del elem[1]
+        del elem[1]
+        elem[1] = len(elem[1].split(','))
+        elem[2] = len(elem[2].split(','))
+    return [tuple(var) for var in datos]
 
 
 def pregunta_11():
@@ -239,7 +338,25 @@ def pregunta_11():
 
 
     """
-    return
+
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+
+    original = datos.copy()
+    original = [var.strip().split('\t') for var in original]
+    datos = [var.strip().split('\t')[3] for var in datos]
+    datos = ','.join(datos).split(',')
+    col4 = sorted(list(set(datos)))
+    respuesta = {}
+
+    for letra in col4:
+        sum = 0
+        for camp in original:
+            if letra in camp[3]:
+                sum += int(camp[1])
+        respuesta[letra] = sum
+        
+    return respuesta
 
 
 def pregunta_12():
@@ -257,4 +374,26 @@ def pregunta_12():
     }
 
     """
-    return
+
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+
+    datos = [var.strip().split('\t') for var in datos]
+
+    respuesta = {}
+
+    for dato in datos:
+        letra = dato[0]
+
+        arr = [map(str.strip, sub.split(':', 1)) for sub in dato[4].split(',') if ':' in sub]
+
+        arr = dict(arr)
+        arr = dict([x, int(y)] for x, y in arr.items())
+        suma = sum(arr.values())
+        if letra in respuesta:
+            respuesta[letra] += suma
+        else:
+            respuesta[letra] = suma
+
+    respuesta = dict(sorted(respuesta.items()))
+    return respuesta
