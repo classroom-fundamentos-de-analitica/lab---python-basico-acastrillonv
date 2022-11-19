@@ -42,6 +42,9 @@ def pregunta_02():
     ]
 
     """
+    with open('data.csv', mode='r') as datos:
+        datos = datos.readlines()
+
     datos = [var.strip().split('\t')[0] for var in datos]
     col1 = sorted(dict.fromkeys(datos))
     respuesta = []
